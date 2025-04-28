@@ -30,7 +30,7 @@ def parse_with_gpt(text):
     """
 
     try:
-        print(f"OpenAI API Key: {os.getenv('OPENAI_API_KEY')}")
+        print(f"OpenAI API Key: {os.getenv('OPENAI_API_KEY')}")  
         print(f"Sending prompt to OpenAI: {prompt}")
         
         response = openai.ChatCompletion.create(
