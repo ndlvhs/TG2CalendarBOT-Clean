@@ -2,7 +2,7 @@ import os
 import logging
 from aiogram import Bot, Dispatcher, executor, types
 from calendar_api import create_event
-from nlp_parser import extract_task_info
+from nlp_parser import parse_with_gpt
 from config import TELEGRAM_BOT_TOKEN
 import datetime
 
