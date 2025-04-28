@@ -18,10 +18,17 @@ async def start_command(message: types.Message):
 
 @dp.message_handler()
 async def echo_message(message: types.Message):
-    # Парсим сообщение с GPT
     user_text = message.text
-    parsed = parse_with_gpt(user_text)
+    print(f"Received message: {user_text}")  # Логируем полученное сообщение
 
+    # Логируем ключ API для проверки
+    print(f"OPENAI_API_KEY: {os.getenv('OPENAI_API_KEY')}")
+
+    # Парсим с GPT
+    parsed = parse_with_gpt(user_text)
+    print(f"Parsed response: {parsed}")  # Логируем ответ GPT
+
+    # Далее обработка данных
     if "error" in parsed:
         await message.answer("❌ Не смог распознать дату и время. Попробуй уточнить.")
     else:
