@@ -1,7 +1,8 @@
 aiogram==2.25.1
-openai
 google-api-python-client
 google-auth
 python-dateutil
 dateparser
-python-dotenvopenai
+python-dotenv
+openai
+openai
