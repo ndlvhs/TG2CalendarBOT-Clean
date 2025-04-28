@@ -1,16 +1,51 @@
 import openai
-import dateparser
-from config import OPENAI_API_KEY
+import os
+import json
+from datetime import datetime
 
-openai.api_key = OPENAI_API_KEY
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
-def extract_task_info(text):
-    # Можем использовать OpenAI, но для базового MVP просто парсим дату
-    parsed_date = dateparser.parse(text, languages=['en', 'ru'])
+def parse_with_gpt(text):
+    today = datetime.now().strftime("%Y-%m-%d")
 
-    # Простая логика: если нашли дату — оставляем текст задачи без даты
-    if parsed_date:
-        clean_text = text.replace(str(parsed_date.date()), '').strip()
-        return clean_text, parsed_date
-    else:
-        return text, None
+    prompt = f"""
+Ты помощник по организации задач. Сегодняшняя дата: {today}.
+
+Я отправлю тебе текст сообщения на русском языке.
+
+Твоя задача:
+- Извлечь дату (в формате ГГГГ-ММ-ДД)
+- Извлечь время (в формате ЧЧ:ММ)
+- Извлечь краткое название события
+
+Если во входном тексте написано "завтра", "послезавтра", "через два дня" или что-то подобное — ты должен рассчитать реальную дату, исходя из сегодняшней даты: {today}.
+
+Отвечай только в формате JSON:
+
+{{
+  "date": "2025-04-29",
+  "time": "18:00",
+  "event": "тренировка джиу джитсу"
+}}
+
+Если дата или время непонятны — ответь {{"error": "Не могу определить дату/время"}}.
+
+Текст: "{text}"
+    """
+
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-4o",
+            messages=[
+                {"role": "system", "content": "Ты помощник по парсингу событий."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0,
+            max_tokens=300,
+        )
+        message = response['choices'][0]['message']['content']
+        return json.loads(message)
+
+    except Exception as e:
+        print(f"Ошибка при запросе к OpenAI: {e}")
+        return {"error": "Ошибка запроса"}
