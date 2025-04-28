@@ -2,4 +2,5 @@
 client_secrets.json
 
 echo ".env" >> .gitignore
-echo "client_secrets.json" >> .gitignore
+echo "client_secrets.json" >> .gitignore.env
+client_secrets.json
