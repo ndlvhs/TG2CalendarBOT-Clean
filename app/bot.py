@@ -9,6 +9,7 @@ import datetime
 logging.basicConfig(level=logging.INFO)
 
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+print(f"TELEGRAM_BOT_TOKEN loaded: {TELEGRAM_BOT_TOKEN}")
 bot = Bot(token=TELEGRAM_BOT_TOKEN)
 dp = Dispatcher(bot)
 
