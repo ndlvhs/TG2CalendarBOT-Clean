@@ -1,5 +1,13 @@
+import openai
+import os
+import json
+from datetime import datetime  # Добавляем импорт datetime
+
+# Загружаем ключ OpenAI из переменных окружения
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
 def parse_with_gpt(text):
-    today = datetime.now().strftime("%Y-%m-%d")
+    today = datetime.now().strftime("%Y-%m-%d")  # Теперь datetime доступен
 
     prompt = f"""
     Ты помощник по организации задач. Сегодняшняя дата: {today}.
@@ -30,9 +38,6 @@ def parse_with_gpt(text):
     """
 
     try:
-        print(f"OpenAI API Key: {os.getenv('OPENAI_API_KEY')}")  
-        print(f"Sending prompt to OpenAI: {prompt}")
-        
         response = openai.ChatCompletion.create(
             model="gpt-4o",
             messages=[
