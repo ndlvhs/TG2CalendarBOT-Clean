@@ -1,7 +1,7 @@
 import logging
 from aiogram import Bot, Dispatcher, types, executor
 import os
-from nlp_parser import parse_with_gpt
+from openai_api import send_to_openai  # Импортируем функцию из openai_api.py
 
 # Инициализация бота
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
@@ -21,11 +21,8 @@ async def echo_message(message: types.Message):
     user_text = message.text
     print(f"Received message: {user_text}")  # Логируем полученное сообщение
 
-    # Логируем ключ API для проверки
-    print(f"OPENAI_API_KEY: {os.getenv('OPENAI_API_KEY')}")
-
-    # Парсим с GPT
-    parsed = parse_with_gpt(user_text)
+    # Парсим с GPT, используя функцию из openai_api.py
+    parsed = send_to_openai(user_text)
     print(f"Parsed response: {parsed}")  # Логируем ответ GPT
 
     # Далее обработка данных
